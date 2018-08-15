@@ -56,13 +56,11 @@ func main() {
 		fmt.Printf("commit=%s, build date=%s, version=%s\n", commit, date, version)
 		os.Exit(0)
 	}
-	appConfig := &config.AppConfig{
-		Name:      "lazygit",
-		Version:   version,
-		Commit:    commit,
-		BuildDate: date,
-		Debug:     *debuggingFlag,
+	appConfig, err := config.NewAppConfig("lazygit", version, commit, date, debuggingFlag)
+	if err != nil {
+		panic(err)
 	}
+
 	app, err := app.NewApp(appConfig)
 	app.Log.Info(err)
 	app.GitCommand.SetupGit()
